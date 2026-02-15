@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import google.generativeai as genai
+import requests
 import numpy as np
 import time
 
@@ -10,13 +11,24 @@ genai.configure(api_key=GEMINI_API_KEY)
 model_ai = genai.GenerativeModel("models/gemini-2.5-flash")
 
 #  LOAD ML MODELS
+
+# RAW GitHub file URLs
+MODEL_URL = "https://raw.githubusercontent.com/nandinidevi3717/healthcare_chatbot_AI/main/disease_model.pkl"
+SYMPTOM_URL = "https://raw.githubusercontent.com/nandinidevi3717/healthcare_chatbot_AI/main/symptom_list.pkl"
+
 try:
-    model = pickle.load(open("disease_model.pkl", "rb"))
-    symptom_list = pickle.load(open("symptom_list.pkl", "rb"))
-except:
-    st.error(
-        "Model files not found. Please ensure disease_model.pkl and symptom_list.pkl exist."
-    )
+    # Download model file
+    model_response = requests.get(MODEL_URL)
+    model = pickle.loads(model_response.content)
+
+    # Download symptom list file
+    symptom_response = requests.get(SYMPTOM_URL)
+    symptom_list = pickle.loads(symptom_response.content)
+
+except Exception as e:
+    st.error("Error loading model files from GitHub.")
+    st.error(str(e))
+
 
 # ADVANCED UI / CUSTOM CSS
 st.set_page_config(
