@@ -6,7 +6,7 @@ import numpy as np
 import time
 
 #  API CONFIGURATION
-GEMINI_API_KEY = "AIzaSyA79WTgqylEkbG2dnc72he8L5YJzDRDN3M"
+GEMINI_API_KEY = ""
 genai.configure(api_key=GEMINI_API_KEY)
 model_ai = genai.GenerativeModel("models/gemini-2.5-flash")
 
